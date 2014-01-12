@@ -25,12 +25,19 @@ public class CentralizedIndex {
 	public void removePeerData(Request request) {
 		PeerNode peerToBeDeleted = tableOfPeers.get(request.getHost());
 
+		tableOfPeers.remove(peerToBeDeleted);
+		
 		Iterator<Integer> iterator = peerToBeDeleted.getRFCNo().iterator();
 		while (iterator.hasNext()) {
 			int rfcNo = iterator.next();
 			RFCNode rfcNode = tableOfRFCs.get(rfcNo);
 			if (rfcNode != null) {
-				rfcNode.getPeersWithThisRFC().remove(peerToBeDeleted);
+				System.out.println("Removing from RFC  "+rfcNode.getRFCNo());
+				if(tableOfRFCs.get(rfcNo).getPeersWithThisRFC().remove(peerToBeDeleted))
+						System.out.println("Peer removed");
+				if(tableOfRFCs.get(rfcNo).getPeersWithThisRFC().size()==0)
+					tableOfRFCs.remove(tableOfRFCs.get(rfcNo));
+				
 			}
 
 		}
@@ -44,7 +51,9 @@ public class CentralizedIndex {
 			PeerNode peernode = new PeerNode();
 			peernode.setHostname(request.getHost());
 			System.out.println("RFC nullpointer" + request.getRFCNo());
-			peernode.setRFCNo(new ArrayList<Integer>());
+			ArrayList<Integer> a = new ArrayList<Integer>();
+			a.add(request.getRFCNo());
+			peernode.setRFCNo(a);
 			peernode.getRFCNo().add(request.getRFCNo());
 			peernode.setUploadPort(request.getPort());
 
@@ -52,7 +61,13 @@ public class CentralizedIndex {
 			return peernode;
 
 		}
-		return getTableOfPeers().get(request.getHost());
+		else
+		{
+			PeerNode peer = getTableOfPeers().get(request.getHost());
+			peer.getRFCNo().add(request.getRFCNo());
+			return peer;
+		}
+		
 
 	}
 
@@ -69,6 +84,7 @@ public class CentralizedIndex {
 			rfcnode.setPeersWithThisRFC(new ArrayList<PeerNode>());
 			rfcnode.getPeersWithThisRFC().add(peer);
 			getTableOfRFCs().put(request.getRFCNo(), rfcnode);
+			System.out.println("In RFCTable added"+request.getRFCNo());
 
 		} else {
 			// Just add peer node to arraylist

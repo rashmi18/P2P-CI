@@ -17,7 +17,7 @@ import java.util.Map;
 public class PeerProgram {
     public static void main(String[] args)
     {
-        Peer peer = new Peer("localhost",0);
+        Peer peer = new Peer("10.139.71.63",0);
         try {
             System.out.println("This is Peer Program");
             boolean exitFlag = false;

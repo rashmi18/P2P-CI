@@ -17,6 +17,7 @@ public class AddRequestHandler implements RequestHandler {
 		System.out.println("In add request");
 
 		PeerNode peer = index.addPeer(request);
+		
 
 		index.addRFC(request, peer);
 		for (final Integer key : index.getTableOfRFCs().keySet()) {
@@ -30,7 +31,7 @@ public class AddRequestHandler implements RequestHandler {
 						+ peerNew.getHostname() + " "
 						+ peerNew.getUploadPort() + "\n");
 			}
-			System.out.println("RFCNode in hashtable is " + node.getRFCTitle());
+			//System.out.println("RFCNode in hashtable is " + node.getRFCTitle());
 		}
 
 	}

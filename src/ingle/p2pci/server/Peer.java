@@ -259,6 +259,7 @@ public class Peer {
             if(file.length() != contLength)
             {
                 System.out.println("File Transfer Incomplete");
+                addRFCRequest(rfcNo);
             }
             else
             {
@@ -314,6 +315,7 @@ public class Peer {
 
         //Read the first line : Status Line
         String line = br.readLine();
+        System.out.println(line);
         tokens = line.split(" ");
         version = tokens[0];
         statusCode = tokens[1];
@@ -330,7 +332,8 @@ public class Peer {
             //Read the next lines till you dont get a null
             while(!(line = br.readLine()).isEmpty())
             {
-            tokens = line.split(" ");
+            	System.out.println(line);
+            	tokens = line.split(" ");
             int lineLen = tokens.length;
             if(!(lineLen < 2))
             {

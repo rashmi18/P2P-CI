@@ -83,8 +83,7 @@ public class ClientWorker implements Runnable {
 							+ node.getRFCTitle() + " " + peerNew.getHostname()
 							+ " " + peerNew.getUploadPort() + "\n");
 				}
-				System.out.println("RFCNode in hashtable is "
-						+ node.getRFCTitle());
+				
 			}
 			else
 				System.out.println("RFC empty");

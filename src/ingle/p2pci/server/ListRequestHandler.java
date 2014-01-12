@@ -27,27 +27,30 @@ public class ListRequestHandler implements RequestHandler {
 
 		StringBuffer responseMessage = new StringBuffer(request.getVersion());
 		StringBuffer records = new StringBuffer();
-		String status=null;
-		for (final Integer key : index.getTableOfRFCs().keySet()) {
-			RFCNode node = index.getTableOfRFCs().get(key);
-			if (node != null) {
-				 status = new String(" 200 OK\n");
-				Iterator<PeerNode> iterator = node.getPeersWithThisRFC()
-						.iterator();
-				while (iterator.hasNext()) {
-					PeerNode peer = iterator.next();
-					records.append(node.getRFCNo() + " "
-							+ node.getRFCTitle() + " " + peer.getHostname()
-							+ " " + peer.getUploadPort() + "\n");
+		String status = null;
+		int flag=0;
+			for (final Integer key : index.getTableOfRFCs().keySet()) {
+				RFCNode node = index.getTableOfRFCs().get(key);
+				if (node != null) {
+					status = new String(" 200 OK\n");
+					Iterator<PeerNode> iterator = node.getPeersWithThisRFC()
+							.iterator();
+					while (iterator.hasNext()) {
+						PeerNode peer = iterator.next();
+						records.append(node.getRFCNo() + " "
+								+ node.getRFCTitle() + " " + peer.getHostname()
+								+ " " + peer.getUploadPort() + "\n");
+						 flag =1;
+					}
+					
+				} 
+			}if(flag==0) {
+					status = new String(request.getVersion()
+							+ " 404 Not Found\n");
 				}
 
-			} else {
-				 status = new String(request.getVersion()
-						+ " 404 Not Found\n");
-			}
+	
 			
-
-		}
 		responseMessage.append(status + records);
 		System.out.println("Response message is " + responseMessage);
 
